@@ -5,6 +5,7 @@ using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Preduzece.TimeTracker.Core.Data;
 using Preduzece.TimeTracker.Models;
 using Preduzece.TimeTracker.Services;
 

@@ -2,6 +2,7 @@ using System;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
+using Preduzece.TimeTracker.Core.Data;
 using Preduzece.TimeTracker.Models;
 
 namespace Preduzece.TimeTracker.Migrations
