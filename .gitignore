@@ -172,6 +172,8 @@ ClientBin/
 *.pfx
 *.publishsettings
 node_modules/
+wwwroot/dist/
+wwwroot/jspm_packages/
 orleans.codegen.cs
 
 # RIA/Silverlight projects
@@ -210,3 +212,4 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+src/TimeTracker/wwwroot/_references.js

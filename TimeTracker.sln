@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CFE8FCEB-666F-412B-96DE-F107C9C4BDA3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5A2F7859-DC35-4F29-81F9-9D6B633E0586}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TimeTracker", "src\TimeTracker\TimeTracker.xproj", "{A3D0FD09-EE6E-4A73-A007-43CF900CC5D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A3D0FD09-EE6E-4A73-A007-43CF900CC5D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3D0FD09-EE6E-4A73-A007-43CF900CC5D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3D0FD09-EE6E-4A73-A007-43CF900CC5D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3D0FD09-EE6E-4A73-A007-43CF900CC5D6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A3D0FD09-EE6E-4A73-A007-43CF900CC5D6} = {CFE8FCEB-666F-412B-96DE-F107C9C4BDA3}
+	EndGlobalSection
+EndGlobal
