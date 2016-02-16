@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Preduzece.TimeTracker.Core.Data;
-using Preduzece.TimeTracker.Models;
+using Preduzece.TimeTracker.Core.Domain;
 using Preduzece.TimeTracker.Services;
 
 namespace Preduzece.TimeTracker
@@ -41,8 +40,8 @@ namespace Preduzece.TimeTracker
                 .AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext, int>()
                 .AddDefaultTokenProviders();
 
             services.AddMvc();

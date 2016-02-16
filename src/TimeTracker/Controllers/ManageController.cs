@@ -4,10 +4,10 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using Preduzece.TimeTracker.Models;
 using Preduzece.TimeTracker.Services;
 using Preduzece.TimeTracker.ViewModels.Manage;
 using System.Security.Claims;
+using Preduzece.TimeTracker.Core.Domain;
 
 namespace Preduzece.TimeTracker.Controllers
 {

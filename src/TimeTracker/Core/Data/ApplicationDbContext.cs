@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using Preduzece.TimeTracker.Core.Domain;
-using Preduzece.TimeTracker.Models;
 
 namespace Preduzece.TimeTracker.Core.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
     {
         public DbSet<Employer> Employers { get; set; }
         public DbSet<Client> Clients { get; set; }
