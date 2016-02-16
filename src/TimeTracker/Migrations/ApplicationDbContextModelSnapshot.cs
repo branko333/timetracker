@@ -95,7 +95,7 @@ namespace Preduzece.TimeTracker.Migrations
                     b.HasAnnotation("Relational:TableName", "AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("TimeTracker.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Preduzece.TimeTracker.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id");
 
@@ -152,14 +152,14 @@ namespace Preduzece.TimeTracker.Migrations
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("TimeTracker.Models.ApplicationUser")
+                    b.HasOne("Preduzece.TimeTracker.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("TimeTracker.Models.ApplicationUser")
+                    b.HasOne("Preduzece.TimeTracker.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
@@ -170,7 +170,7 @@ namespace Preduzece.TimeTracker.Migrations
                         .WithMany()
                         .HasForeignKey("RoleId");
 
-                    b.HasOne("TimeTracker.Models.ApplicationUser")
+                    b.HasOne("Preduzece.TimeTracker.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });

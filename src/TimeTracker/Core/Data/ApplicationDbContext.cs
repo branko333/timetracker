@@ -11,8 +11,9 @@ namespace Preduzece.TimeTracker.Core.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Employer> Employers { get; set; }
-        public DbSet<Client>  Clients { get; set; }
+        public DbSet<Client> Clients { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<Timesheet> Timesheets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
