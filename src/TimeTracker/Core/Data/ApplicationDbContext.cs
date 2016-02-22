@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
+using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
 using Preduzece.TimeTracker.Core.Domain;
 
@@ -14,6 +15,14 @@ namespace Preduzece.TimeTracker.Core.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Timesheet> Timesheets { get; set; }
+
+        protected ApplicationDbContext()
+        {
+        }
+
+        public ApplicationDbContext(DbContextOptions options) : base(options)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

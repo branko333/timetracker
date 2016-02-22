@@ -6,7 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Preduzece.TimeTracker.Models;
+using Preduzece.TimeTracker.Core.Domain;
 using Preduzece.TimeTracker.Services;
 using Preduzece.TimeTracker.ViewModels.Account;
 
