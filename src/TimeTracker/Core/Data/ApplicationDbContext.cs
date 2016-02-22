@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
+using Microsoft.Data.Entity.Metadata;
 using Preduzece.TimeTracker.Core.Domain;
 
 namespace Preduzece.TimeTracker.Core.Data
@@ -62,12 +63,15 @@ namespace Preduzece.TimeTracker.Core.Data
 
         private static void InitializeConventions(ModelBuilder builder)
         {
-            throw new NotImplementedException();
+            // TODO: Investigate conventions
         }
 
         private static void OverrideMappings(ModelBuilder builder)
         {
-            throw new NotImplementedException();
+            builder.Entity<TimesheetEntry>()
+                .HasOne(x => x.Project)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict); // TODO: This does not look right!
         }
     }
 }

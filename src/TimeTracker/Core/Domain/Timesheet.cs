@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Preduzece.TimeTracker.Core.Domain
 {
+    [Table("Timesheets")]
     public class Timesheet : Entity
     {
         public DateTime Date { get; set; }
