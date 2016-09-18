@@ -3,13 +3,18 @@ using Boilerplate.AspNetCore.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using Preduzece.TimeTracker.Data;
+using Preduzece.TimeTracker.Domain;
 using Preduzece.TimeTracker.Settings;
 
 namespace Preduzece.TimeTracker
@@ -19,13 +24,11 @@ namespace Preduzece.TimeTracker
     /// </summary>
     public partial class Startup
     {
-        #region Fields
-
         /// <summary>
         /// Gets or sets the application configuration, where key value pair settings are stored. See
         /// http://docs.asp.net/en/latest/fundamentals/configuration.html
         /// </summary>
-        private readonly IConfiguration configuration;
+        private readonly IConfiguration _configuration;
 
         /// <summary>
         /// The environment the application is running under. This can be Development, Staging or Production by default.
@@ -36,16 +39,12 @@ namespace Preduzece.TimeTracker
         /// 4. Add a new System Variable with the name 'ASPNETCORE_ENVIRONMENT' and value of Production, Staging or
         /// whatever you want. See http://docs.asp.net/en/latest/fundamentals/environments.html
         /// </summary>
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         /// <summary>
         /// Gets or sets the port to use for HTTPS. Only used in the development environment.
         /// </summary>
-        private readonly int? sslPort;
-
-        #endregion
-
-        #region Constructors
+        private readonly int? _sslPort;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
@@ -54,23 +53,23 @@ namespace Preduzece.TimeTracker
         /// Staging or Production by default.</param>
         public Startup(IHostingEnvironment hostingEnvironment)
         {
-            this.hostingEnvironment = hostingEnvironment;
+            _hostingEnvironment = hostingEnvironment;
 
-            configuration = new ConfigurationBuilder()
-                .SetBasePath(this.hostingEnvironment.ContentRootPath)
+            _configuration = new ConfigurationBuilder()
+                .SetBasePath(this._hostingEnvironment.ContentRootPath)
                 // Add configuration from the config.json file.
                 .AddJsonFile("config.json")
                 // Add configuration from an optional config.development.json, config.staging.json or
                 // config.production.json file, depending on the environment. These settings override the ones in the
                 // config.json file.
-                .AddJsonFile($"config.{this.hostingEnvironment.EnvironmentName}.json", optional: true)
+                .AddJsonFile($"config.{_hostingEnvironment.EnvironmentName}.json", optional: true)
                 // This reads the configuration keys from the secret store. This allows you to store connection strings
                 // and other sensitive settings, so you don't have to check them into your source control provider.
                 // Only use this in Development, it is not intended for Production use. See
                 // http://go.microsoft.com/fwlink/?LinkID=532709 and
                 // http://docs.asp.net/en/latest/security/app-secrets.html
                 .AddIf(
-                    this.hostingEnvironment.IsDevelopment(),
+                    _hostingEnvironment.IsDevelopment(),
                     x => x.AddUserSecrets())
                 // Add configuration specific to the Development, Staging or Production environments. This config can
                 // be stored on the machine being deployed to or if you are using Azure, in the cloud. These settings
@@ -86,19 +85,15 @@ namespace Preduzece.TimeTracker
                 .AddEnvironmentVariables()
                 .Build();
 
-            if (this.hostingEnvironment.IsDevelopment())
+            if (_hostingEnvironment.IsDevelopment())
             {
                 var launchConfiguration = new ConfigurationBuilder()
-                    .SetBasePath(this.hostingEnvironment.ContentRootPath)
+                    .SetBasePath(_hostingEnvironment.ContentRootPath)
                     .AddJsonFile(@"Properties\launchSettings.json")
                     .Build();
-                sslPort = launchConfiguration.GetValue<int>("iisSettings:iisExpress:sslPort");
+                _sslPort = launchConfiguration.GetValue<int>("iisSettings:iisExpress:sslPort");
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Configures the services to add to the ASP.NET MVC 6 Injection of Control (IoC) container. This method gets
@@ -111,7 +106,7 @@ namespace Preduzece.TimeTracker
             services
                 .AddAntiforgerySecurely()
                 .AddCaching()
-                .AddOptions(configuration)
+                .AddOptions(_configuration)
                 .AddRouting(
                     options =>
                     {
@@ -132,12 +127,22 @@ namespace Preduzece.TimeTracker
                     .GetUrlHelper(x.GetRequiredService<IActionContextAccessor>().ActionContext))
                 // Adds a filter which help improve search engine optimization (SEO).
                 .AddSingleton<RedirectToCanonicalUrlAttribute>()
+
+                // Add EntityFramework
+                .AddEntityFrameworkSqlServer()
+                    .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")))
+
+                // Add ASP.NET Identity
+                .AddIdentity<ApplicationUser, ApplicationRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext, int>()
+                    .AddDefaultTokenProviders().Services
+
                 // Add many MVC services to the services container.
                 .AddMvc(
                     options =>
                     {
                         // Controls how controller actions cache content from the config.json file.
-                        var cacheProfileSettings = configuration.GetSection<CacheProfileSettings>();
+                        var cacheProfileSettings = _configuration.GetSection<CacheProfileSettings>();
                         foreach (var keyValuePair in cacheProfileSettings.CacheProfiles)
                         {
                             options.CacheProfiles.Add(keyValuePair);
@@ -147,7 +152,7 @@ namespace Preduzece.TimeTracker
                         // Development. The port number to use is taken from the launchSettings.json file which Visual
                         // Studio uses to start the application.
                         options.Filters.Add(new RequireHttpsAttribute());
-                        options.SslPort = sslPort;
+                        options.SslPort = _sslPort;
 
                         // Adds a filter which help improve search engine optimization (SEO).
                         options.Filters.AddService(typeof(RedirectToCanonicalUrlAttribute));
@@ -157,7 +162,8 @@ namespace Preduzece.TimeTracker
                 .AddJsonOptions(
                     x => x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
                 .Services
-                .AddCustomServices();
+                .AddCustomServices()
+                ;
         }
 
         /// <summary>
@@ -174,9 +180,9 @@ namespace Preduzece.TimeTracker
                 // Add the Serilog package to project.json before uncommenting the line below.
                 // .AddSerilog()
                 .AddIf(
-                    hostingEnvironment.IsDevelopment(),
+                    _hostingEnvironment.IsDevelopment(),
                     x => x
-                        .AddConsole(configuration.GetSection("Logging"))
+                        .AddConsole(_configuration.GetSection("Logging"))
                         .AddDebug());
 
             application
@@ -186,19 +192,18 @@ namespace Preduzece.TimeTracker
                 .UseStaticFiles()
                 .UseCookiePolicy()
                 .UseIfElse(
-                    hostingEnvironment.IsDevelopment(),
+                    _hostingEnvironment.IsDevelopment(),
                     x => x
                         .UseDebugging()
                         .UseDeveloperErrorPages(),
                     x => x.UseErrorPages())
                 .UseStrictTransportSecurityHttpHeader()
                 .UsePublicKeyPinsHttpHeader()
-                .UseContentSecurityPolicyHttpHeader(sslPort, hostingEnvironment)
+                .UseContentSecurityPolicyHttpHeader(_sslPort, _hostingEnvironment)
                 .UseSecurityHttpHeaders()
+                .UseIdentity()
                 // Add MVC to the request pipeline.
                 .UseMvc();
         }
-
-        #endregion
     }
 }
