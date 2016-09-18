@@ -9,7 +9,7 @@ using Preduzece.TimeTracker.Constants;
 
 namespace Preduzece.TimeTracker
 {
-    public static partial class ApplicationBuilderExtensions
+    public static class ApplicationBuilderExtensions
     {
         /// <summary>
         /// Configure tools used to help with debugging the application.
@@ -27,7 +27,7 @@ namespace Preduzece.TimeTracker
         public static IApplicationBuilder UseCookiePolicy(this IApplicationBuilder application)
         {
             return application.UseCookiePolicy(
-                new CookiePolicyOptions()
+                new CookiePolicyOptions
                 {
                     // Ensure that external script cannot access the cookie.
                     HttpOnly = HttpOnlyPolicy.Always,
@@ -44,7 +44,7 @@ namespace Preduzece.TimeTracker
         {
             // When a database error occurs, displays a detailed error page with full diagnostic information. It is
             // unsafe to use this in production. Uncomment this if using a database.
-            // application.UseDatabaseErrorPage(DatabaseErrorPageOptions.ShowAll);
+            application.UseDatabaseErrorPage();
 
             // When an error occurs, displays a detailed error page with full diagnostic information.
             // See http://docs.asp.net/en/latest/fundamentals/diagnostics.html
@@ -138,7 +138,7 @@ namespace Preduzece.TimeTracker
                         // objects on the page using HTTP are automatically upgraded to HTTPS.
                         // See https://scotthelme.co.uk/migrating-from-http-to-https-ease-the-pain-with-csp-and-hsts/
                         // and http://www.w3.org/TR/upgrade-insecure-requests/
-                        .UpgradeInsecureRequests(sslPort.HasValue ? sslPort.Value : 443)
+                        .UpgradeInsecureRequests(sslPort ?? 443)
                         // default-src - Sets a default source list for a number of directives. If the other directives
                         // below are not used then this is the default setting.
                         .DefaultSources(x => x.None())                    // We disallow everything by default.
@@ -155,10 +155,10 @@ namespace Preduzece.TimeTracker
                             x =>
                             {
                                 x.Self();                                 // Allow all AJAX and Web Sockets calls from the same domain.
-                                var customSources = new List<string>()    // Allow AJAX and Web Sockets to the following sources.
-                                {
+                                var customSources = new List<string>();   // Allow AJAX and Web Sockets to the following sources.
+                                //{
                                     // "*.example.com",                   // Allow AJAX and Web Sockets to example.com.
-                                };
+                                //};
                                 if (hostingEnvironment.IsDevelopment())   // Allow Browser Link to work correctly in Development.
                                 {
                                     customSources.Add("localhost:*");
@@ -171,11 +171,9 @@ namespace Preduzece.TimeTracker
                             x =>
                             {
                                 x.Self();                                 // Allow all fonts from the same domain.
-                                x.CustomSources(new string[]              // Allow fonts from the following sources.
-                                {
                                     // "*.example.com",                   // Allow AJAX and Web Sockets to example.com.
-                                    ContentDeliveryNetwork.MaxCdn.Domain  // Allow fonts from maxcdn.bootstrapcdn.com.
-                                });
+                                // Allow fonts from the following sources including from maxcdn.bootstrapcdn.com.
+                                x.CustomSources(ContentDeliveryNetwork.MaxCdn.Domain);
                             })
                         // form-action - This directive restricts which URLs can be used as the action of HTML form elements.
                         .FormActions(x => x.Self())              // Allow the current domain.
@@ -192,10 +190,7 @@ namespace Preduzece.TimeTracker
                                 x.Self();                                 // Allow the current domain.
                                 if (hostingEnvironment.IsDevelopment())   // Allow Browser Link to work correctly in Development.
                                 {
-                                    x.CustomSources(new string[]
-                                    {
-                                        "data:"
-                                    });
+                                    x.CustomSources("data:");
                                 }
                             })
                         // script-src - This directive restricts which scripts the protected resource can execute.
@@ -205,7 +200,7 @@ namespace Preduzece.TimeTracker
                             x =>
                             {
                                 x.Self();                                 // Allow all scripts from the same domain.
-                                var customSources = new List<string>()
+                                var customSources = new List<string>
                                 {
                                     ContentDeliveryNetwork.Google.Domain, // Allow scripts from the following CDN's.
                                     ContentDeliveryNetwork.Microsoft.Domain
@@ -234,10 +229,8 @@ namespace Preduzece.TimeTracker
                             x =>
                             {
                                 x.Self();                                // Allow all stylesheets from the same domain.
-                                x.CustomSources(new string[]
-                                {
-                                    ContentDeliveryNetwork.MaxCdn.Domain // Allow stylesheets from the following CDN's.
-                                });
+                                // Allow stylesheets from the following CDN's.
+                                x.CustomSources(ContentDeliveryNetwork.MaxCdn.Domain);
                                 // Allow in-line CSS, this is unsafe and can open your site up to XSS vulnerabilities.
                                 // Note: This is enabled because Modernizr does not support CSP and includes in-line
                                 // styles in its JavaScript files. This is a security hole. If you don't want to use

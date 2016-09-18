@@ -56,7 +56,7 @@ namespace Preduzece.TimeTracker
         {
             this.hostingEnvironment = hostingEnvironment;
 
-            this.configuration = new ConfigurationBuilder()
+            configuration = new ConfigurationBuilder()
                 .SetBasePath(this.hostingEnvironment.ContentRootPath)
                 // Add configuration from the config.json file.
                 .AddJsonFile("config.json")
@@ -92,7 +92,7 @@ namespace Preduzece.TimeTracker
                     .SetBasePath(this.hostingEnvironment.ContentRootPath)
                     .AddJsonFile(@"Properties\launchSettings.json")
                     .Build();
-                this.sslPort = launchConfiguration.GetValue<int>("iisSettings:iisExpress:sslPort");
+                sslPort = launchConfiguration.GetValue<int>("iisSettings:iisExpress:sslPort");
             }
         }
 
@@ -111,7 +111,7 @@ namespace Preduzece.TimeTracker
             services
                 .AddAntiforgerySecurely()
                 .AddCaching()
-                .AddOptions(this.configuration)
+                .AddOptions(configuration)
                 .AddRouting(
                     options =>
                     {
@@ -137,7 +137,7 @@ namespace Preduzece.TimeTracker
                     options =>
                     {
                         // Controls how controller actions cache content from the config.json file.
-                        var cacheProfileSettings = this.configuration.GetSection<CacheProfileSettings>();
+                        var cacheProfileSettings = configuration.GetSection<CacheProfileSettings>();
                         foreach (var keyValuePair in cacheProfileSettings.CacheProfiles)
                         {
                             options.CacheProfiles.Add(keyValuePair);
@@ -186,14 +186,14 @@ namespace Preduzece.TimeTracker
                 .UseStaticFiles()
                 .UseCookiePolicy()
                 .UseIfElse(
-                    this.hostingEnvironment.IsDevelopment(),
+                    hostingEnvironment.IsDevelopment(),
                     x => x
                         .UseDebugging()
                         .UseDeveloperErrorPages(),
                     x => x.UseErrorPages())
                 .UseStrictTransportSecurityHttpHeader()
                 .UsePublicKeyPinsHttpHeader()
-                .UseContentSecurityPolicyHttpHeader(this.sslPort, this.hostingEnvironment)
+                .UseContentSecurityPolicyHttpHeader(sslPort, hostingEnvironment)
                 .UseSecurityHttpHeaders()
                 // Add MVC to the request pipeline.
                 .UseMvc();

@@ -5,11 +5,11 @@ namespace Preduzece.TimeTracker.Services.Robots
 {
     public sealed class RobotsService : IRobotsService
     {
-        private readonly IUrlHelper urlHelper;
+        private readonly IUrlHelper _urlHelper;
 
         public RobotsService(IUrlHelper urlHelper)
         {
-            this.urlHelper = urlHelper;
+            _urlHelper = urlHelper;
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Preduzece.TimeTracker.Services.Robots
         /// <returns>The robots text for the current site.</returns>
         public string GetRobotsText()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
 
             // Allow all robots.
             stringBuilder.AppendLine("user-agent: *");

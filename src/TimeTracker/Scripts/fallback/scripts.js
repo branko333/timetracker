@@ -3,17 +3,17 @@
 // Example: Bootstrap is dependant on jQuery. If loading jQuery from the CDN fails, this script loads the jQuery
 //          fallback and waits for it to finish loading before attempting the next fallback test.
 (function (document) {
-    "use strict";
+    'use strict';
 
     var fallbacks = [
         // test - Tests whether the script loaded successfully or not. Returns true if the script loaded successfully or
         //        false if the script failed to load and the fallback is required.
         // src - The URL to the fallback script.
-        { test: function () { return window.Modernizr; }, src: "/js/modernizr.js" },
-        { test: function () { return window.jQuery; }, src: "/js/jquery.js" },
-        { test: function () { return window.jQuery.validator; }, src: "/js/jquery-validate.js" },
-        { test: function () { return window.jQuery.validator.unobtrusive; }, src: "/js/jquery-validate-unobtrusive.js" },
-        { test: function () { return window.jQuery.fn.modal; }, src: "/js/bootstrap.js" }
+        { test: function () { return window.Modernizr; }, src: '/js/modernizr.js' },
+        { test: function () { return window.jQuery; }, src: '/js/jquery.js' },
+        { test: function () { return window.jQuery.validator; }, src: '/js/jquery-validate.js' },
+        { test: function () { return window.jQuery.validator.unobtrusive; }, src: '/js/jquery-validate-unobtrusive.js' },
+        { test: function () { return window.jQuery.fn.modal; }, src: '/js/bootstrap.js' }
     ];
 
     var check = function (fallbacks, i) {
@@ -23,12 +23,12 @@
                 check(fallbacks, i + 1);
             }
             else {
-                var script = document.createElement("script");
+                var script = document.createElement('script');
                 script.onload = function () {
                     check(fallbacks, i + 1);
                 };
                 script.src = fallback.src;
-                document.getElementsByTagName("body")[0].appendChild(script);
+                document.getElementsByTagName('body')[0].appendChild(script);
             }
         }
     };

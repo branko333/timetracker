@@ -22,6 +22,8 @@ namespace Preduzece.TimeTracker
                 .UseKestrel(
                     options =>
                     {
+                        // TODO: for Kestrel to serve HTTPS, a certificate is required
+                        //options.UseHttps()
                         // Do not add the Server HTTP header when using the Kestrel Web Server.
                         options.AddServerHeader = false;
                     })

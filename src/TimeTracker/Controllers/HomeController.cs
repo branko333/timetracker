@@ -2,47 +2,34 @@
 using Boilerplate.AspNetCore;
 using Boilerplate.AspNetCore.Filters;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Preduzece.TimeTracker.Constants;
 using Preduzece.TimeTracker.Constants.HomeController;
 using Preduzece.TimeTracker.Services.BrowserConfig;
 using Preduzece.TimeTracker.Services.Manifest;
 using Preduzece.TimeTracker.Services.Robots;
-using Preduzece.TimeTracker.Settings;
 
 namespace Preduzece.TimeTracker.Controllers
 {
     public class HomeController : Controller
     {
-        #region Fields
-
-        private readonly IOptions<AppSettings> appSettings;
-        private readonly IBrowserConfigService browserConfigService;
-        private readonly IManifestService manifestService;
-        private readonly IRobotsService robotsService;
-
-        #endregion
-
-        #region Constructors
+        private readonly IBrowserConfigService _browserConfigService;
+        private readonly IManifestService _manifestService;
+        private readonly IRobotsService _robotsService;
 
         public HomeController(
             IBrowserConfigService browserConfigService,
             IManifestService manifestService,
-            IRobotsService robotsService,
-            IOptions<AppSettings> appSettings)
+            IRobotsService robotsService)
         {
-            this.appSettings = appSettings;
-            this.browserConfigService = browserConfigService;
-            this.manifestService = manifestService;
-            this.robotsService = robotsService;
+            _browserConfigService = browserConfigService;
+            _manifestService = manifestService;
+            _robotsService = robotsService;
         }
-
-        #endregion
 
         [HttpGet("", Name = HomeControllerRoute.GetIndex)]
         public IActionResult Index()
         {
-            return this.View(HomeControllerAction.Index);
+            return View(HomeControllerAction.Index);
         }
 
         /// <summary>
@@ -56,8 +43,8 @@ namespace Preduzece.TimeTracker.Controllers
         [Route("browserconfig.xml", Name = HomeControllerRoute.GetBrowserConfigXml)]
         public ContentResult BrowserConfigXml()
         {
-            string content = this.browserConfigService.GetBrowserConfigXml();
-            return this.Content(content, ContentType.Xml, Encoding.UTF8);
+            var content = _browserConfigService.GetBrowserConfigXml();
+            return Content(content, ContentType.Xml, Encoding.UTF8);
         }
 
         /// <summary>
@@ -73,8 +60,8 @@ namespace Preduzece.TimeTracker.Controllers
         [Route("manifest.json", Name = HomeControllerRoute.GetManifestJson)]
         public ContentResult ManifestJson()
         {
-            string content = this.manifestService.GetManifestJson();
-            return this.Content(content, ContentType.Json, Encoding.UTF8);
+            var content = _manifestService.GetManifestJson();
+            return Content(content, ContentType.Json, Encoding.UTF8);
         }
 
         /// <summary>
@@ -90,8 +77,8 @@ namespace Preduzece.TimeTracker.Controllers
         [Route("robots.txt", Name = HomeControllerRoute.GetRobotsText)]
         public IActionResult RobotsText()
         {
-            string content = this.robotsService.GetRobotsText();
-            return this.Content(content, ContentType.Text, Encoding.UTF8);
+            var content = _robotsService.GetRobotsText();
+            return Content(content, ContentType.Text, Encoding.UTF8);
         }
     }
 }

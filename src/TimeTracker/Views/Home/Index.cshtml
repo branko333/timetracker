@@ -7,34 +7,32 @@
     //         characters. The site name appears at the end for better SEO.
     ViewBag.Title = "Home";
     // Description - Used by search engines. Aim for more than 160 characters.
-    ViewBag.Description = "A professional ASP.NET MVC template for building secure, fast, robust and adaptable web applications or sites. It provides the minimum amount of code required on top of the default MVC template provided by Microsoft.";
+    ViewBag.Description = "TimeTracker is a simple application for collecting daily timesheet entries for a (freelance) developer.";
 }
 
-@* Code in the head section below gets added at the bottom of the HTML head element. This section can be used to enter
-    custom meta tags specific to this page. *@
 @section head
 {
     @* Author - (Optional) Used by search engines. The author of the page. *@
-    <meta name="author" content="Muhammad Rehan Saeed">
+    <meta name="author" content="Miroslav Popovic">
     @* Add Twitter Card social meta tags so we can customize what happens when our page is shared on Twitter. There are
         several different Twitter Card types we could add, a different one is added on each page as an example.
         These helpers make it very easy to add the meta tags. For best performance, see what tags are generated and
         hand-code them yourself instead of using these helpers. *@
-    <twitter-card-summary-large-image username="@@RehanSaeedUK">
-        @* Add Open Graph social meta tags so we can customize what happens when our page is shared on Facebook, Google+,
-            Pintrest and other social media websites. There are dozens of Open Graph types, a different one is added on
-            each page as an example. These helpers make it very easy to add the meta tags. For best performance, see what
-            tags are generated and hand-code them yourself instead of using these helpers. *@
-        <open-graph-website site-name="@AppSettings.Value.SiteTitle"
-                            title="@ViewBag.Title"
-                            main-image="@(new OpenGraphImage(
-                            Url.AbsoluteContent("~/img/icons/open-graph-1200x630.png"),
-                            ContentType.Png,
-                            1200,
-                            630))"
-                            determiner="Blank">
-            @* referrer - Controls what is sent in the HTTP referrer header when a client navigates to an external site. *@
-            <meta asp-referrer="OriginWhenCrossOrigin">
+    <twitter-card-summary-large-image username="@@MiroslavPopovic">
+    @* Add Open Graph social meta tags so we can customize what happens when our page is shared on Facebook, Google+,
+        Pintrest and other social media websites. There are dozens of Open Graph types, a different one is added on
+        each page as an example. These helpers make it very easy to add the meta tags. For best performance, see what
+        tags are generated and hand-code them yourself instead of using these helpers. *@
+    <open-graph-website site-name="@AppSettings.Value.SiteTitle"
+                        title="@ViewBag.Title"
+                        main-image="@(new OpenGraphImage(
+                        Url.AbsoluteContent("~/img/icons/open-graph-1200x630.png"),
+                        ContentType.Png,
+                        1200,
+                        630))"
+                        determiner="Blank">
+    @* referrer - Controls what is sent in the HTTP referrer header when a client navigates to an external site. *@
+    <meta asp-referrer="OriginWhenCrossOrigin">
 }
 
 <div id="main-carousel" class="carousel slide" data-ride="carousel" data-interval="6000">
@@ -238,8 +236,6 @@
     </article>
 </div>
 
-@* Code in the scripts section below gets added at the bottom of the HTML body element, below other scripts. This
-    section can be used to enter custom scripts specific to this page. *@
 @section scripts
 {
 }

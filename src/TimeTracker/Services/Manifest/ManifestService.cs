@@ -8,15 +8,15 @@ namespace Preduzece.TimeTracker.Services.Manifest
 {
     public class ManifestService : IManifestService
     {
-        private readonly IOptions<AppSettings> appSettings;
-        private readonly IUrlHelper urlHelper;
+        private readonly IOptions<AppSettings> _appSettings;
+        private readonly IUrlHelper _urlHelper;
 
         public ManifestService(
             IOptions<AppSettings> appSettings,
             IUrlHelper urlHelper)
         {
-            this.appSettings = appSettings;
-            this.urlHelper = urlHelper;
+            _appSettings = appSettings;
+            _urlHelper = urlHelper;
         }
 
         /// <summary>
@@ -29,9 +29,9 @@ namespace Preduzece.TimeTracker.Services.Manifest
         /// <returns>The manifest JSON for the current site.</returns>
         public string GetManifestJson()
         {
-            JObject document = new JObject(
-                new JProperty("short_name", this.appSettings.Value.SiteShortTitle),
-                new JProperty("name", this.appSettings.Value.SiteTitle),
+            var document = new JObject(
+                new JProperty("short_name", _appSettings.Value.SiteShortTitle),
+                new JProperty("name", _appSettings.Value.SiteTitle),
                 new JProperty("icons",
                     new JArray(
                         GetIconJObject("~/img/icons/android-chrome-36x36.png", "36x36", "image/png", "0.75"),
@@ -55,7 +55,7 @@ namespace Preduzece.TimeTracker.Services.Manifest
         private JObject GetIconJObject(string iconPath, string sizes, string type, string density)
         {
             return new JObject(
-                new JProperty("src", this.urlHelper.Content(iconPath)),
+                new JProperty("src", _urlHelper.Content(iconPath)),
                 new JProperty("sizes", sizes),
                 new JProperty("type", type),
                 new JProperty("density", density));

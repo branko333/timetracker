@@ -16,7 +16,7 @@
 //             keyword does actually mean undefined and has not been reassigned (Yes, that is possible in JavaScript).
 (function (framework, $, window, document, undefined) {
     // Enable strict mode for JavaScript (See https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Strict_mode).
-    "use strict";
+    'use strict';
 
     // Add your code here.
 
@@ -58,7 +58,7 @@
         // This private function is not exposed to those who want to use the Calculator.
         function checkDivideByZero(x) {
             if ((x === 0) && self.throwOnDivideByZero) {
-                throw new Error("Divide by Zero.");
+                throw new Error('Divide by Zero.');
             }
         }
 

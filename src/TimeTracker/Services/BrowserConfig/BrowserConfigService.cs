@@ -7,11 +7,11 @@ namespace Preduzece.TimeTracker.Services.BrowserConfig
 {
     public class BrowserConfigService : IBrowserConfigService
     {
-        private readonly IUrlHelper urlHelper;
+        private readonly IUrlHelper _urlHelper;
 
         public BrowserConfigService(IUrlHelper urlHelper)
         {
-            this.urlHelper = urlHelper;
+            this._urlHelper = urlHelper;
         }
 
         /// <summary>
@@ -23,28 +23,35 @@ namespace Preduzece.TimeTracker.Services.BrowserConfig
         public string GetBrowserConfigXml()
         {
             // The URL to the 70x70 small tile image.
-            string square70x70logoUrl = this.urlHelper.Content("~/img/icons/mstile-70x70.png");
+            var square70X70LogoUrl = _urlHelper.Content("~/img/icons/mstile-70x70.png");
             // The URL to the 150x150 medium tile image.
-            string square150x150logoUrl = this.urlHelper.Content("~/img/icons/mstile-150x150.png");
+            var square150X150LogoUrl = _urlHelper.Content("~/img/icons/mstile-150x150.png");
             // The URL to the 310x310 large tile image.
-            string square310x310logoUrl = this.urlHelper.Content("~/img/icons/mstile-310x310.png");
+            var square310X310LogoUrl = _urlHelper.Content("~/img/icons/mstile-310x310.png");
             // The URL to the 310x150 wide tile image.
-            string wide310x150logoUrl = this.urlHelper.Content("~/img/icons/mstile-310x150.png");
+            var wide310X150LogoUrl = _urlHelper.Content("~/img/icons/mstile-310x150.png");
             // The colour of the tile. This colour only shows if part of your images above are transparent.
-            string tileColour = "#1E1E1E";
+            var tileColour = "#1E1E1E";
 
-            XDocument document = new XDocument(
-                new XElement("browserconfig",
-                    new XElement("msapplication",
-                        new XElement("tile",
-                            new XElement("square70x70logo",
-                                new XAttribute("src", square70x70logoUrl)),
-                            new XElement("square150x150logo",
-                                new XAttribute("src", square150x150logoUrl)),
-                            new XElement("square310x310logo",
-                                new XAttribute("src", square310x310logoUrl)),
-                            new XElement("wide310x150logo",
-                                new XAttribute("src", wide310x150logoUrl)),
+            var document = new XDocument(
+                new XElement(
+                    "browserconfig",
+                    new XElement(
+                        "msapplication",
+                        new XElement(
+                            "tile",
+                            new XElement(
+                                "square70x70logo",
+                                new XAttribute("src", square70X70LogoUrl)),
+                            new XElement(
+                                "square150x150logo",
+                                new XAttribute("src", square150X150LogoUrl)),
+                            new XElement(
+                                "square310x310logo",
+                                new XAttribute("src", square310X310LogoUrl)),
+                            new XElement(
+                                "wide310x150logo",
+                                new XAttribute("src", wide310X150LogoUrl)),
                             new XElement("TileColor", tileColour)))));
 
             return document.ToString(Encoding.UTF8);

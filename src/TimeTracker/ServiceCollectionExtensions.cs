@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Preduzece.TimeTracker.Services.BrowserConfig;
 using Preduzece.TimeTracker.Services.Manifest;
 using Preduzece.TimeTracker.Services.Robots;
@@ -7,7 +10,7 @@ using Preduzece.TimeTracker.Settings;
 
 namespace Preduzece.TimeTracker
 {
-    public static partial class ServiceCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
         /// <summary>
         /// Configures the anti-forgery tokens for better security. See:
@@ -38,9 +41,9 @@ namespace Preduzece.TimeTracker
         }
 
         /// <summary>
-        /// Configures caching for the application. Registers the <see cref="IDistrbutedCache"/> and
+        /// Configures caching for the application. Registers the <see cref="IDistributedCache"/> and
         /// <see cref="IMemoryCache"/> types with the services collection or IoC container. The
-        /// <see cref="IDistrbutedCache"/> is intended to be used in cloud hosted scenarios where there is a shared
+        /// <see cref="IDistributedCache"/> is intended to be used in cloud hosted scenarios where there is a shared
         /// cache, which is shared between multiple instances of the application. Use the <see cref="IMemoryCache"/>
         /// otherwise.
         /// </summary>
@@ -49,10 +52,10 @@ namespace Preduzece.TimeTracker
         {
             return services
                 // Adds IMemoryCache which is a simple in-memory cache.
-                .AddMemoryCache()
-                // Adds IDistributedCache which is a distributed cache shared between multiple servers. This adds a
-                // default implementation of IDistributedCache which is not distributed. See below:
-                .AddDistributedMemoryCache();
+                .AddMemoryCache();
+            // Adds IDistributedCache which is a distributed cache shared between multiple servers. This adds a
+            // default implementation of IDistributedCache which is not distributed. See below:
+            // .AddDistributedMemoryCache();
             // Uncomment the following line to use the Redis implementation of IDistributedCache. This will
             // override any previously registered IDistributedCache service.
             // Redis is a very fast cache provider and the recommended distributed cache provider.
@@ -74,7 +77,7 @@ namespace Preduzece.TimeTracker
 
         /// <summary>
         /// Configures the settings by binding the contents of the config.json file to the specified Plain Old CLR
-        /// Objects (POCO) and adding <see cref="IOptions{}"/> objects to the services collection.
+        /// Objects (POCO) and adding <see cref="IOptions{TOptions}"/> objects to the services collection.
         /// </summary>
         /// <param name="services">The services collection or IoC container.</param>
         /// <param name="configuration">Gets or sets the application configuration, where key value pair settings are

@@ -1,6 +1,6 @@
-﻿{
+{
   "name": "timetracker",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "devDependencies": {
     "autostrip-json-comments": "0.0.4",
     "gulp": "3.9.1",

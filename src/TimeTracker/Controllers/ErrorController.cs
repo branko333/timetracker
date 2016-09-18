@@ -11,8 +11,6 @@ namespace Preduzece.TimeTracker.Controllers
     [Route("[controller]")]
     public sealed class ErrorController : Controller
     {
-        #region Public Methods
-
         /// <summary>
         /// Gets the error view for the specified HTTP error status code. Returns a <see cref="PartialViewResult"/> if
         /// the request is an Ajax request, otherwise returns a full <see cref="ViewResult"/>.
@@ -26,22 +24,20 @@ namespace Preduzece.TimeTracker.Controllers
         [HttpGet("{statusCode:int:range(400, 599)}/{status?}", Name = ErrorControllerRoute.GetError)]
         public IActionResult Error(int statusCode, string status)
         {
-            this.Response.StatusCode = statusCode;
+            Response.StatusCode = statusCode;
 
             ActionResult result;
-            if (this.Request.IsAjaxRequest())
+            if (Request.IsAjaxRequest())
             {
                 // This allows us to show errors even in partial views.
-                result = this.PartialView(ErrorControllerAction.Error, statusCode);
+                result = PartialView(ErrorControllerAction.Error, statusCode);
             }
             else
             {
-                result = this.View(ErrorControllerAction.Error, statusCode);
+                result = View(ErrorControllerAction.Error, statusCode);
             }
 
             return result;
         }
-
-        #endregion
     }
 }
