@@ -1,12 +1,34 @@
-# TimeTracker #
+# TimeTracker
 
-This is a sample application for ASP.NET Core and Aurelia.
+This is a sample application and research project for ASP.NET Core, Aurelia and other libraries, frameworks and tools:
 
-A lot of things are not done currently, including the content of this readme file.
+- ASP.NET Core / WebAPI
+- Aurelia
+- Aurelia CLI
+- Entity Framework Core (for now, Marten later)
+- ASP.NET Identity Framework Core
+- IdentityServer4
+- ASP.NET MVC Boilerplate
+- MediatR
+- ...
+
+A lot of things are in the flux, including the content of this readme file.
 
 ## Functionality
 
-TimeTracker is a simple application for collecting daily timesheet entries for a freelance developer.
+TimeTracker is a simple application for collecting daily timesheet entries for a (freelance) developer.
+
+### Requirements
+
+The application collects daily `Timesheet` from `Developer`, for a particular `Employer`, employer's `Client` and client's `Project`. Each timesheet entry also contains description, date, hours spent and hourly wage / rate.
+
+Developer hourly rate is definable per employer, client and project where each subsequnt rate overrides previous one.
+
+Developer has the ability to display timesheet summaries filtered per period, employer, client and project.
+
+`Employer manager` has the ability to display timesheet summaries filtered per developer, period, client and project. Manager can also create clients and projects, set developer's hourly rate and assign her to various projects.
+
+`Admin` can create employers, assign managers and developers to employers, view system log, etc.
 
 ## Application setup
 
