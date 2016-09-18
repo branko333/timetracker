@@ -3,12 +3,10 @@ using Boilerplate.AspNetCore.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -22,7 +20,7 @@ namespace Preduzece.TimeTracker
     /// <summary>
     /// The main start-up class for the application.
     /// </summary>
-    public partial class Startup
+    public class Startup
     {
         /// <summary>
         /// Gets or sets the application configuration, where key value pair settings are stored. See
@@ -56,7 +54,7 @@ namespace Preduzece.TimeTracker
             _hostingEnvironment = hostingEnvironment;
 
             _configuration = new ConfigurationBuilder()
-                .SetBasePath(this._hostingEnvironment.ContentRootPath)
+                .SetBasePath(_hostingEnvironment.ContentRootPath)
                 // Add configuration from the config.json file.
                 .AddJsonFile("config.json")
                 // Add configuration from an optional config.development.json, config.staging.json or
@@ -117,6 +115,10 @@ namespace Preduzece.TimeTracker
                         // All generated URL's should be lower-case.
                         options.LowercaseUrls = true;
                     })
+
+                // Add cross-origin resource sharing (CORS) services (See https://docs.asp.net/en/latest/security/cors.html).
+                .AddCorsPolicies()
+
                 // Add useful interface for accessing the ActionContext outside a controller.
                 .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
                 // Add useful interface for accessing the HttpContext outside a controller.
@@ -125,6 +127,7 @@ namespace Preduzece.TimeTracker
                 .AddScoped<IUrlHelper>(x => x
                     .GetRequiredService<IUrlHelperFactory>()
                     .GetUrlHelper(x.GetRequiredService<IActionContextAccessor>().ActionContext))
+
                 // Adds a filter which help improve search engine optimization (SEO).
                 .AddSingleton<RedirectToCanonicalUrlAttribute>()
 
@@ -151,17 +154,20 @@ namespace Preduzece.TimeTracker
                         // Require HTTPS to be used across the whole site. Also set a custom port to use for SSL in
                         // Development. The port number to use is taken from the launchSettings.json file which Visual
                         // Studio uses to start the application.
-                        options.Filters.Add(new RequireHttpsAttribute());
-                        options.SslPort = _sslPort;
+                        if (!_hostingEnvironment.IsDevelopment())
+                        {
+                            options.Filters.Add(new RequireHttpsAttribute());
+                            options.SslPort = _sslPort;
+                        }
 
                         // Adds a filter which help improve search engine optimization (SEO).
                         options.Filters.AddService(typeof(RedirectToCanonicalUrlAttribute));
                     })
+
                 // Configures the JSON output formatter to use camel case property names like 'propertyName' instead of
                 // pascal case 'PropertyName' as this is the more common JavaScript/JSON style.
-                .AddJsonOptions(
-                    x => x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
-                .Services
+                .AddJsonOptions(x => x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver()).Services
+
                 .AddCustomServices()
                 ;
         }

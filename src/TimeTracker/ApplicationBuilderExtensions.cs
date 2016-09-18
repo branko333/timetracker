@@ -133,12 +133,13 @@ namespace Preduzece.TimeTracker
                     options
                         // Enables logging of CSP violations. Register with the https://report-uri.io/ service to get a
                         // URL where you can send your CSP violation reports and view them.
-                        .ReportUris(x => x.Uris("http://example.com/csp-report"))
+                        .ReportUris(x => x.Uris("https://timetracker.report-uri.io/r/default/csp/reportOnly"))
                         // upgrade-insecure-requests - This directive is only relevant if you are using HTTPS. Any
                         // objects on the page using HTTP are automatically upgraded to HTTPS.
                         // See https://scotthelme.co.uk/migrating-from-http-to-https-ease-the-pain-with-csp-and-hsts/
                         // and http://www.w3.org/TR/upgrade-insecure-requests/
-                        .UpgradeInsecureRequests(sslPort ?? 443)
+                        // TODO: Enable this when SSL configuration is used
+                        //.UpgradeInsecureRequests(sslPort ?? 443)
                         // default-src - Sets a default source list for a number of directives. If the other directives
                         // below are not used then this is the default setting.
                         .DefaultSources(x => x.None())                    // We disallow everything by default.

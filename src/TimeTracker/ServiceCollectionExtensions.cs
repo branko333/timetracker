@@ -76,6 +76,22 @@ namespace Preduzece.TimeTracker
         }
 
         /// <summary>
+        /// Add cross-origin resource sharing (CORS) services and configures named CORS policies. See
+        /// https://docs.asp.net/en/latest/security/cors.html
+        /// </summary>
+        /// <param name="services">The services collection or IoC container.</param>
+        public static IServiceCollection AddCorsPolicies(this IServiceCollection services)
+        {
+            return services.AddCors(
+                options =>
+                {
+                    options.AddPolicy(
+                        options.DefaultPolicyName,
+                        x => { x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials(); });
+                    options.AddPolicy("MyCustomPolicy", x => {});
+                });
+        }
+        /// <summary>
         /// Configures the settings by binding the contents of the config.json file to the specified Plain Old CLR
         /// Objects (POCO) and adding <see cref="IOptions{TOptions}"/> objects to the services collection.
         /// </summary>
