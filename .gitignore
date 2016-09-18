@@ -170,6 +170,7 @@ ClientBin/
 *.dbproj.schemaview
 *.pfx
 *.publishsettings
+bower_components/
 node_modules/
 wwwroot/dist/
 wwwroot/jspm_packages/
